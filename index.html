@@ -1,442 +1,236 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>جدول شغل يوم الخميس الدوري</title>
+<title>جدول الخميس</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <style>
-:root{
-    --primary-color:#2c3e50;
-    --accent-color:#d35400;
-    --bg-color:#f4f6f7;
-    --card-bg:#ffffff;
-    --text-color:#333;
-}
-
 body{
-    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-    background:var(--bg-color);
-    color:var(--text-color);
-    margin:0;
-    padding:20px;
-    transition:.3s;
+font-family:Tahoma;
+background:#f4f6f7;
+margin:0;
+padding:20px;
+transition:.3s;
 }
 
 .dark{
-    --bg-color:#1b1b1b;
-    --card-bg:#2a2a2a;
-    --text-color:#f5f5f5;
+background:#1c1c1c;
+color:#fff;
 }
 
-.container{
-    max-width:1000px;
-    margin:auto;
+.box{
+background:#fff;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
 }
 
-h1{
-    text-align:center;
-    color:var(--primary-color);
-    margin-bottom:10px;
-}
-
-.date-container{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.hijri-date{
-    background:#fff3e0;
-    color:#e65100;
-    padding:10px 20px;
-    border-radius:20px;
-    display:inline-block;
-    font-weight:bold;
-    font-size:18px;
-}
-
-.info-note{
-    margin-top:8px;
-    color:#7f8c8d;
-}
-
-.names-section,
-.table-responsive{
-    background:var(--card-bg);
-    border-radius:10px;
-    padding:20px;
-    box-shadow:0 4px 8px rgba(0,0,0,.08);
-    margin-bottom:20px;
-}
-
-.names-section h3{
-    margin-top:0;
-}
-
-.inputs-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:15px;
-    margin-bottom:15px;
-}
-
-.inputs-grid input{
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:6px;
-    text-align:center;
-    font-size:16px;
-}
-
-.btn-group{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-}
-
-.btn{
-    flex:1;
-    border:none;
-    padding:12px;
-    border-radius:6px;
-    cursor:pointer;
-    color:#fff;
-    font-size:15px;
-}
-
-.btn-save{
-    background:#2c3e50;
-}
-
-.btn-dark{
-    background:#8e44ad;
-}
-
-.btn-print{
-    background:#16a085;
+.dark .box{
+background:#2a2a2a;
 }
 
 table{
-    width:100%;
-    border-collapse:collapse;
-    text-align:center;
+width:100%;
+border-collapse:collapse;
+text-align:center;
 }
 
 th,td{
-    padding:18px;
-    border-bottom:1px solid #eee;
+padding:10px;
+border-bottom:1px solid #ddd;
 }
 
-th{
-    color:white;
-}
+th{background:#2c3e50;color:#fff;}
 
-.day-col{
-    background:#d35400;
-}
-
-.task-ground{
-    background:#e74c3c;
-}
-
-.task-first{
-    background:#2ecc71;
-}
-
-.task-second{
-    background:#f1c40f;
-    color:#333;
-}
-
-.task-yard{
-    background:#9b59b6;
-}
-
-.person-tag{
-    background:#e8f8f5;
-    color:#117a65;
-    padding:8px 15px;
-    border-radius:20px;
-    font-weight:bold;
-    display:inline-block;
-    min-width:100px;
-}
-
-.tasks-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:15px;
-    margin-top:20px;
-}
-
-.task-card{
-    background:var(--card-bg);
-    padding:20px;
-    border-radius:10px;
-    text-align:center;
-    box-shadow:0 4px 8px rgba(0,0,0,.08);
-}
-
-.task-title{
-    font-weight:bold;
-    margin-bottom:10px;
-}
-
-@media print{
-    .names-section,
-    .btn-group{
-        display:none;
-    }
-
-    body{
-        background:white;
-    }
-
-    .table-responsive{
-        box-shadow:none;
-    }
+.tag{
+background:#e8f8f5;
+padding:5px 10px;
+border-radius:20px;
+display:inline-block;
 }
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
+<h2>📅 جدول الخميس</h2>
 
-<h1>📅 جدول شغل يوم الخميس الدوري</h1>
-
-<div class="date-container">
-    <div class="hijri-date" id="hijri-display">
-        جاري تحميل التاريخ...
-    </div>
-
-```
-<div class="info-note">
-    🔄 يتم تدوير المهام تلقائياً كل خميس
+<div class="box">
+<div id="hijri"></div>
+<div id="next"></div>
 </div>
 
-<div class="info-note" id="next-rotation"></div>
-```
-
+<div class="box">
+<h3>👥 الأشخاص (مقفل)</h3>
+<p>الأرضي: شوق</p>
+<p>الأول: محمد</p>
+<p>الثاني: فارس</p>
+<p>الحوش: راكان</p>
 </div>
 
-<div class="names-section">
-
-<h3>👥 ترتيب الأشخاص الأساسي</h3>
-
-<div class="inputs-grid">
-    <input id="p1" placeholder="الاسم الأول">
-    <input id="p2" placeholder="الاسم الثاني">
-    <input id="p3" placeholder="الاسم الثالث">
-    <input id="p4" placeholder="الاسم الرابع">
+<div class="box">
+<button onclick="toggle()">🌙</button>
 </div>
 
-<div class="btn-group">
-    <button class="btn btn-save" onclick="updateNames()">
-        💾 حفظ الأسماء
-    </button>
-
-```
-<button class="btn btn-dark" onclick="toggleTheme()">
-    🌙 الوضع الليلي
-</button>
-
-<button class="btn btn-print" onclick="window.print()">
-    🖨️ طباعة
-</button>
-```
-
-</div>
-
-</div>
-
-<div class="table-responsive">
-
+<div class="box">
 <table>
+<tr>
+<th>أرضي</th>
+<th>أول</th>
+<th>ثاني</th>
+<th>حوش</th>
+</tr>
+<tr>
+<td id="t0"></td>
+<td id="t1"></td>
+<td id="t2"></td>
+<td id="t3"></td>
+</tr>
+</table>
+</div>
 
+<div class="box">
+<h3>📜 التاريخ</h3>
+<table>
 <thead>
 <tr>
-<th class="day-col">اليوم</th>
-<th class="task-ground">الدور الأرضي</th>
-<th class="task-first">الدور الأول</th>
-<th class="task-second">الدور الثاني</th>
-<th class="task-yard">الحوش</th>
+<th>التاريخ</th>
+<th>أرضي</th>
+<th>أول</th>
+<th>ثاني</th>
+<th>حوش</th>
 </tr>
 </thead>
-
-<tbody>
-<tr>
-<td style="font-weight:bold;color:#d35400;">
-الخميس
-</td>
-
-<td id="task-0"></td>
-<td id="task-1"></td>
-<td id="task-2"></td>
-<td id="task-3"></td>
-</tr>
-</tbody>
-
+<tbody id="history"></tbody>
 </table>
-
-</div>
-
-<div class="tasks-grid">
-
-<div class="task-card">
-<div class="task-title">🏠 الدور الأرضي</div>
-<div id="card-0"></div>
-</div>
-
-<div class="task-card">
-<div class="task-title">🏢 الدور الأول</div>
-<div id="card-1"></div>
-</div>
-
-<div class="task-card">
-<div class="task-title">🏢 الدور الثاني</div>
-<div id="card-2"></div>
-</div>
-
-<div class="task-card">
-<div class="task-title">🌳 الحوش</div>
-<div id="card-3"></div>
-</div>
-
-</div>
-
 </div>
 
 <script>
 
-let savedNames =
-JSON.parse(localStorage.getItem("onlyThursdayNames"))
-|| ["أحمد","محمد","خالد","سلطان"];
+/* 🔥 FIREBASE (PUT YOUR INFO HERE) */
+const firebaseConfig = {
+apiKey: "YOUR_KEY",
+authDomain: "YOUR_DOMAIN",
+projectId: "YOUR_ID",
+storageBucket: "YOUR_BUCKET",
+messagingSenderId: "XXXX",
+appId: "XXXX"
+};
 
-document.getElementById("p1").value=savedNames[0];
-document.getElementById("p2").value=savedNames[1];
-document.getElementById("p3").value=savedNames[2];
-document.getElementById("p4").value=savedNames[3];
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-function displayHijriDate(){
+/* 🔒 LOCKED NAMES */
+let saved = ["شوق","محمد","فارس","راكان"];
 
-    const today=new Date();
-
-    const hijri=
-    new Intl.DateTimeFormat(
-        "ar-SA-u-ca-islamic-umalqura",
-        {
-            day:"numeric",
-            month:"long",
-            year:"numeric"
-        }
-    ).format(today);
-
-    document.getElementById("hijri-display").textContent =
-    "🌙 التاريخ الهجري: " + hijri;
+/* WEEK CALC */
+function getWeek(){
+let start=new Date("2025-01-02");
+let now=new Date();
+return Math.floor((now-start)/(1000*60*60*24*7));
 }
 
-function getThursdayCount(){
+/* LOAD CLOUD */
+async function load(){
 
-    const startDate =
-    new Date("2025-01-02");
+const doc = await db.collection("schedule")
+.doc("thursday").get();
 
-    const today =
-    new Date();
-
-    const diffDays =
-    Math.floor(
-        (today-startDate)/
-        (1000*60*60*24)
-    );
-
-    return Math.floor(diffDays/7);
+if(doc.exists){
+saved = doc.data().names;
 }
 
-function updateNextThursday(){
-
-    const today=new Date();
-
-    const next=new Date(today);
-
-    while(next.getDay()!==4){
-        next.setDate(next.getDate()+1);
-    }
-
-    document.getElementById("next-rotation").textContent=
-    "📆 التغيير القادم: "+
-    next.toLocaleDateString("ar-SA");
+render();
 }
 
-function renderTable(){
-
-    const rotation=getThursdayCount();
-
-    for(let i=0;i<4;i++){
-
-        const person=
-        savedNames[
-        (rotation+i)%savedNames.length
-        ];
-
-        const html=
-        `<span class="person-tag">${person}</span>`;
-
-        document.getElementById(
-        `task-${i}`
-        ).innerHTML=html;
-
-        document.getElementById(
-        `card-${i}`
-        ).innerHTML=html;
-    }
+/* SAVE CLOUD */
+function saveCloud(){
+db.collection("schedule")
+.doc("thursday")
+.set({
+names:saved,
+updated:new Date()
+});
 }
 
-function updateNames(){
+/* RENDER */
+function render(){
 
-    savedNames[0]=
-    document.getElementById("p1").value || "أحمد";
+let w=getWeek();
 
-    savedNames[1]=
-    document.getElementById("p2").value || "محمد";
+/* TASKS */
+t0.innerHTML=`<span class="tag">${saved[(w)%4]}</span>`;
+t1.innerHTML=`<span class="tag">${saved[(w+1)%4]}</span>`;
+t2.innerHTML=`<span class="tag">${saved[(w+2)%4]}</span>`;
+t3.innerHTML=`<span class="tag">${saved[(w+3)%4]}</span>`;
 
-    savedNames[2]=
-    document.getElementById("p3").value || "خالد";
+/* HIJRI */
+let today=new Date();
 
-    savedNames[3]=
-    document.getElementById("p4").value || "سلطان";
+let hijri=new Intl.DateTimeFormat(
+"ar-SA-u-ca-islamic-umalqura",
+{day:"numeric",month:"long",year:"numeric"}
+).format(today);
 
-    localStorage.setItem(
-        "onlyThursdayNames",
-        JSON.stringify(savedNames)
-    );
+document.getElementById("hijri").innerText =
+"📆 الهجري: " + hijri;
 
-    renderTable();
+/* NEXT THURSDAY */
+let next=new Date(today);
+while(next.getDay()!=4) next.setDate(next.getDate()+1);
 
-    alert("تم حفظ الأسماء بنجاح");
+let nextHijri=new Intl.DateTimeFormat(
+"ar-SA-u-ca-islamic-umalqura",
+{day:"numeric",month:"long",year:"numeric"}
+).format(next);
+
+document.getElementById("next").innerText =
+"📅 التغيير القادم: " + nextHijri;
+
+/* HISTORY */
+renderHistory(w);
 }
 
-function toggleTheme(){
+/* HISTORY */
+function renderHistory(current){
 
-    document.body.classList.toggle("dark");
+let html="";
 
-    localStorage.setItem(
-        "theme",
-        document.body.classList.contains("dark")
-        ? "dark"
-        : "light"
-    );
+for(let i=0;i<10;i++){
+
+let w=current-i;
+let d=new Date();
+d.setDate(d.getDate()-i*7);
+
+let hij=new Intl.DateTimeFormat(
+"ar-SA-u-ca-islamic-umalqura",
+{day:"numeric",month:"long",year:"numeric"}
+).format(d);
+
+html+=`
+<tr>
+<td>${hij}</td>
+<td>${saved[(w)%4]}</td>
+<td>${saved[(w+1)%4]}</td>
+<td>${saved[(w+2)%4]}</td>
+<td>${saved[(w+3)%4]}</td>
+</tr>`;
 }
 
-if(localStorage.getItem("theme")==="dark"){
-    document.body.classList.add("dark");
+history.innerHTML=html;
 }
 
-displayHijriDate();
-updateNextThursday();
-renderTable();
+/* DARK MODE */
+function toggle(){
+document.body.classList.toggle("dark");
+}
+
+/* START */
+load();
 
 </script>
 
