@@ -388,7 +388,7 @@
 </div>
 
 <script>
-    const defaultNames = ["شوق", "محمد", "فارس", "راكان"];
+    const defaultNames = ["شوق", "محمد", "فارس", "المبرمج "];
     const taskLabels   = ["الارضي", "تنظيف العصافير", "الدرج والسطح والمصعد", "الملحق والشارع"];
 
     // مرساة: أسبوع 3 محرم 1447
@@ -498,8 +498,8 @@
             ? thursdays[Math.floor(thursdays.length / 2)]
             : refDate;
 
-        document.getElementById('month-display').textContent = '🌙 أشغال شهر ' + hijriMonthYearStr(midDate);
-        document.getElementById('archive-label').textContent = isArchive ? '📦 أرشيف' : '';
+        document.getElementById('month-display').textContent = ' أشغال شهر 🌙' + hijriMonthYearStr(midDate);
+        document.getElementById('archive-label').textContent = isArchive ? ' أرشيف 📦' : '';
 
         document.getElementById('archive-banner').classList.toggle('visible', isArchive);
         document.getElementById('reset-btn').style.display = isArchive ? 'none' : '';
@@ -550,19 +550,19 @@
                 else td.classList.add('status-none');
 
                 let statusText = '';
-                if (st === 'yes') statusText = ' اشتغل✅';
-                else if (st === 'no') statusText = ' عجاز❌';
-                else if (st === 'warn') statusText = ' على المحك⚠️';
+                if (st === 'yes') statusText = ' اشتغل ✅';
+                else if (st === 'no') statusText = ' عجاز ❌';
+                else if (st === 'warn') statusText = ' على المحك ⚠️';
 
                 td.innerHTML = `
                     <span class="task-label">${taskLabels[i]}</span>
                     <span class="person-name">${data.tasks[i]}</span>
                     <span class="status-badge">${statusText || '&nbsp;'}</span>
                     <div class="actions">
-                        <button class="btn btn-yes"  onclick="setStatus('${key}',${i},'yes')"> اشتغل✅</button>
-                        <button class="btn btn-warn" onclick="setStatus('${key}',${i},'warn')"> اظبط امورك⚠️</button>
-                        <button class="btn btn-no"   onclick="setStatus('${key}',${i},'no')"> عجاز❌</button>
-                        <button class="btn btn-swap" onclick="openSwap('${key}',${i},'${data.tasks[i]}')"> بدل🔄</button>
+                        <button class="btn btn-yes"  onclick="setStatus('${key}',${i},'yes')"> اشتغل ✅</button>
+                        <button class="btn btn-warn" onclick="setStatus('${key}',${i},'warn')"> اظبط امورك ⚠️</button>
+                        <button class="btn btn-no"   onclick="setStatus('${key}',${i},'no')"> عجاز ❌</button>
+                        <button class="btn btn-swap" onclick="openSwap('${key}',${i},'${data.tasks[i]}')"> بدل 🔄</button>
                     </div>
                 `;
                 tr.appendChild(td);
