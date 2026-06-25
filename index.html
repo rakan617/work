@@ -550,9 +550,9 @@
                 else td.classList.add('status-none');
 
                 let statusText = '';
-                if (st === 'yes') statusText = '✅ اشتغل';
-                else if (st === 'no') statusText = '❌ عجاز';
-                else if (st === 'warn') statusText = '⚠️ على المحك';
+                if (st === 'yes') statusText = ' اشتغل✅';
+                else if (st === 'no') statusText = ' عجاز❌';
+                else if (st === 'warn') statusText = ' على المحك⚠️';
 
                 td.innerHTML = `
                     <span class="task-label">${taskLabels[i]}</span>
