@@ -1,4 +1,585 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>الشغل الاسبوعي</title>
+
+    <style>
+
+        :root {
+
+            --primary-color: #1e293b;
+
+            --accent-color: #0284c7;
+
+            --text-color: #334155;
+
+            --cell-bg: rgba(255, 255, 255, 0.95); /* خليت المربعات بيضاء مع شفافية خفيفة جداً تطلع فخمة */
+
+        }
+
+
+        body {
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            color: var(--text-color);
+
+            margin: 0;
+
+            padding: 20px;
+
+            
+
+            /* أضفنا خلفية الصورة هنا */
+
+            background-image: url('bg.jpg'); /* اسم الصورة اللي بترفعها */
+
+            background-size: cover; /* تغطي الشاشة بالكامل */
+
+            background-position: center; /* تتوسط الشاشة */
+
+            background-attachment: fixed; /* تثبت في مكانها لما تنزل بالصفحة */
+
+            background-color: #cbd5e1; /* لون احتياطي لو تأخرت الصورة بالتحميل */
+
+        }
+
+
+        .container {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding-top: 10px;
+
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #ffffff; /* خليت العنوان أبيض عشان يبرز على الصورة */
+
+            margin-bottom: 5px;
+
+            font-size: 34px;
+
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* ظل أسود عشان ينقرئ على أي صورة */
+
+        }
+
+
+        .month-title {
+
+            text-align: center;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            color: #ffffff;
+
+            margin-bottom: 30px;
+
+            background: rgba(2, 132, 199, 0.85); /* خلفية زرقاء شبه شفافة */
+
+            display: inline-block;
+
+            padding: 10px 30px;
+
+            border-radius: 30px;
+
+            width: fit-content;
+
+            margin-left: auto;
+
+            margin-right: auto;
+
+            display: block;
+
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+
+        }
+
+
+        /* تصميم الإكسل والمسافات */
+
+        .table-wrapper {
+
+            overflow-x: auto;
+
+            padding-bottom: 20px;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: separate;
+
+            border-spacing: 12px 15px;
+
+        }
+
+
+        th {
+
+            background-color: rgba(30, 41, 59, 0.9);
+
+            color: white;
+
+            font-weight: bold;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            font-size: 18px;
+
+            text-align: center;
+
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+
+            backdrop-filter: blur(5px); /* تأثير الزجاج المضبب */
+
+        }
+
+
+        .date-cell {
+
+            background-color: rgba(2, 132, 199, 0.9);
+
+            color: white;
+
+            font-weight: bold;
+
+            font-size: 16px;
+
+            vertical-align: middle;
+
+            border: none;
+
+            width: 140px;
+
+            backdrop-filter: blur(5px);
+
+        }
+
+
+        .hijri-date {
+
+            font-size: 13px;
+
+            font-weight: normal;
+
+            color: #bae6fd;
+
+            margin-top: 8px;
+
+            display: inline-block;
+
+            border-top: 1px solid rgba(255,255,255,0.2);
+
+            padding-top: 5px;
+
+        }
+
+
+        td {
+
+            background-color: var(--cell-bg);
+
+            border: 2px solid rgba(203, 213, 225, 0.5);
+
+            border-radius: 8px;
+
+            padding: 20px 10px;
+
+            text-align: center;
+
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+            transition: all 0.3s ease;
+
+            vertical-align: top;
+
+            min-width: 140px;
+
+            backdrop-filter: blur(10px);
+
+        }
+
+
+        /* حالات الألوان */
+
+        td.status-yes { background-color: rgba(209, 250, 229, 0.95); border-color: #10b981; }
+
+        td.status-no { background-color: rgba(254, 226, 226, 0.95); border-color: #ef4444; }
+
+
+        .person-name {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            color: var(--primary-color);
+
+            margin-bottom: 15px;
+
+            display: block;
+
+        }
+
+
+        /* الأزرار الصغار */
+
+        .actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            margin-top: 10px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .btn-small {
+
+            padding: 6px 12px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            border: 1px solid transparent;
+
+            transition: 0.2s;
+
+            flex: 1;
+
+            min-width: 45px;
+
+        }
+
+
+        .btn-yes { background-color: #e6f4ea; color: #137333; border-color: #137333; }
+
+        .btn-no { background-color: #fce8e6; color: #c5221f; border-color: #c5221f; }
+
+        .btn-swap { background-color: #e8f0fe; color: #1a73e8; border-color: #1a73e8; }
+
+
+        .btn-small:hover { opacity: 0.8; }
+
+        .btn-small:active { transform: scale(0.95); }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="container">
+
+    <h1>🗓️ جدول الشغل الاسبوعي</h1>
+
+    <div class="month-title" id="month-display">جاري التحميل...</div>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th style="background-color: rgba(2, 132, 199, 0.9);">التاريخ</th>
+
+                    <th>الدور الأرضي</th>
+
+                    <th>الدور الأول</th>
+
+                    <th>الدور الثاني</th>
+
+                    <th>الحوش</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="table-body">
+
+                <!-- سيتم توليد أسابيع الشهر هنا تلقائياً -->
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const defaultNames = ["شوق", "محمد", "فارس", "راكان"];
+
+    let monthlyWeeksData = {}; 
+
+
+    function getThursdaysOfCurrentMonth() {
+
+        const today = new Date();
+
+        const year = today.getFullYear();
+
+        const month = today.getMonth();
+
+        let thursdays = [];
+
+
+        const monthName = new Intl.DateTimeFormat('ar-SA', { month: 'long', year: 'numeric' }).format(today);
+
+        document.getElementById('month-display').innerText = `أشغال شهر: ${monthName}`;
+
+
+        let date = new Date(year, month, 1);
+
+        while (date.getMonth() === month) {
+
+            if (date.getDay() === 4) { 
+
+                thursdays.push(new Date(date));
+
+            }
+
+            date.setDate(date.getDate() + 1);
+
+        }
+
+        return thursdays;
+
+    }
+
+
+    function getWeekIndex(dateObj) {
+
+        const localTimeMs = dateObj.getTime() + (3 * 60 * 60 * 1000);
+
+        return Math.floor(localTimeMs / (7 * 24 * 60 * 60 * 1000));
+
+    }
+
+
+    function initMonth() {
+
+        const thursdays = getThursdaysOfCurrentMonth();
+
+        const tbody = document.getElementById('table-body');
+
+        tbody.innerHTML = "";
+
+
+        thursdays.forEach(thursday => {
+
+            let wIndex = getWeekIndex(thursday);
+
+            let weekKey = `appData_v2_${wIndex}`;
+
+            
+
+            let savedData = localStorage.getItem(weekKey);
+
+            if (savedData) {
+
+                monthlyWeeksData[wIndex] = JSON.parse(savedData);
+
+            } else {
+
+                let initialTasks = [];
+
+                for (let i = 0; i < 4; i++) {
+
+                    let personIndex = (wIndex + i) % 4;
+
+                    initialTasks.push(defaultNames[personIndex]);
+
+                }
+
+                monthlyWeeksData[wIndex] = { tasks: initialTasks, status: ["", "", "", ""] };
+
+                localStorage.setItem(weekKey, JSON.stringify(monthlyWeeksData[wIndex]));
+
+            }
+
+
+            const gregStr = new Intl.DateTimeFormat('ar-SA', { day: 'numeric', month: 'long' }).format(thursday);
+
+            const hijriStr = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', { day: 'numeric', month: 'short', year: 'numeric' }).format(thursday);
+
+            
+
+            let tr = document.createElement('tr');
+
+            
+
+            let dateTd = document.createElement('td');
+
+            dateTd.className = 'date-cell';
+
+            dateTd.innerHTML = `الخميس<br><br>${gregStr}<br><span class="hijri-date">${hijriStr} هـ</span>`;
+
+            tr.appendChild(dateTd);
+
+
+            for (let i = 0; i < 4; i++) {
+
+                let td = document.createElement('td');
+
+                let currentStatus = monthlyWeeksData[wIndex].status[i];
+
+                
+
+                if (currentStatus === 'yes') td.classList.add('status-yes');
+
+                if (currentStatus === 'no') td.classList.add('status-no');
+
+
+                td.innerHTML = `
+
+                    <span class="person-name">${monthlyWeeksData[wIndex].tasks[i]}</span>
+
+                    <div class="actions">
+
+                        <button class="btn-small btn-yes" onclick="setStatus(${wIndex}, ${i}, 'yes')">✅ اشتغل</button>
+
+                        <button class="btn-small btn-no" onclick="setStatus(${wIndex}, ${i}, 'no')">❌ عجاز</button>
+
+                        <button class="btn-small btn-swap" onclick="swapPerson(${wIndex}, ${i})">🔄 بدل</button>
+
+                    </div>
+
+                `;
+
+                tr.appendChild(td);
+
+            }
+
+            tbody.appendChild(tr);
+
+        });
+
+    }
+
+
+    function setStatus(wIndex, taskIndex, statusType) {
+
+        let weekKey = `appData_v2_${wIndex}`;
+
+        let weekData = monthlyWeeksData[wIndex];
+
+
+        if (weekData.status[taskIndex] === statusType) {
+
+            weekData.status[taskIndex] = ""; 
+
+        } else {
+
+            weekData.status[taskIndex] = statusType;
+
+        }
+
+
+        localStorage.setItem(weekKey, JSON.stringify(weekData));
+
+        initMonth(); 
+
+    }
+
+
+    function swapPerson(wIndex, taskIndex) {
+
+        let weekKey = `appData_v2_${wIndex}`;
+
+        let weekData = monthlyWeeksData[wIndex];
+
+        
+
+        let currentPerson = weekData.tasks[taskIndex];
+
+        let otherPerson = prompt(`تبغى تبدل "${currentPerson}" مع مين في هذا الأسبوع؟\n(اكتب: شوق، محمد، فارس، أو راكان)`);
+
+        
+
+        if (otherPerson) {
+
+            otherPerson = otherPerson.trim();
+
+            let otherIndex = weekData.tasks.indexOf(otherPerson);
+
+            
+
+            if (otherIndex !== -1 && otherIndex !== taskIndex) {
+
+                weekData.tasks[taskIndex] = weekData.tasks[otherIndex];
+
+                weekData.tasks[otherIndex] = currentPerson;
+
+                
+
+                let tempStatus = weekData.status[taskIndex];
+
+                weekData.status[taskIndex] = weekData.status[otherIndex];
+
+                weekData.status[otherIndex] = tempStatus;
+
+
+                localStorage.setItem(weekKey, JSON.stringify(weekData));
+
+                initMonth();
+
+            } else {
+
+                alert("الاسم غير موجود أو مكتوب بشكل خاطئ! تأكد من كتابة الاسم بدون مسافات إضافية.");
+
+            }
+
+        }
+
+    }
+
+
+    initMonth();
+
+</script>
+
+
+</body>
+
+</html> <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
