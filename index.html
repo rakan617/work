@@ -8,9 +8,7 @@
         :root {
             --primary: #0f172a;
             --accent: #0369a1;
-            --accent-light: #38bdf8;
             --surface: rgba(255,255,255,0.92);
-            --surface-blur: rgba(255,255,255,0.6);
             --green-bg: rgba(220, 252, 231, 0.97);
             --green-border: #16a34a;
             --red-bg: rgba(254, 226, 226, 0.97);
@@ -30,14 +28,13 @@
             background-attachment: fixed;
         }
 
-        /* Starfield/pattern overlay */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background-image:
-                radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(3, 105, 161, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(56,189,248,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(3,105,161,0.15) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -49,42 +46,71 @@
             margin: 0 auto;
         }
 
-        /* Header */
-        header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
+        /* ─── Header ─── */
+        header { text-align: center; margin-bottom: 24px; }
 
         h1 {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             color: #fff;
-            letter-spacing: 1px;
             text-shadow: 0 2px 12px rgba(0,0,0,0.5);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
-        .month-badge {
-            display: inline-flex;
+        /* ─── Month nav ─── */
+        .month-nav {
+            display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(3, 105, 161, 0.75);
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover { background: rgba(255,255,255,0.22); }
+        .nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+        .month-badge {
+            background: rgba(3,105,161,0.75);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            border: 1px solid rgba(56,189,248,0.3);
             color: #fff;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             padding: 10px 28px;
             border-radius: 50px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            min-width: 220px;
+            text-align: center;
         }
 
-        /* Table wrapper */
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 16px;
+        .archive-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 400;
+            color: #7dd3fc;
+            margin-top: 2px;
+            letter-spacing: 1px;
         }
+
+        /* ─── Table ─── */
+        .table-wrapper { overflow-x: auto; border-radius: 16px; }
 
         table {
             width: 100%;
@@ -94,7 +120,7 @@
         }
 
         thead th {
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15,23,42,0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             color: #e2e8f0;
@@ -102,106 +128,61 @@
             font-weight: 700;
             padding: 14px 10px;
             text-align: center;
-            letter-spacing: 0.5px;
         }
 
         thead th:first-child { border-radius: 10px 0 0 10px; }
         thead th:last-child  { border-radius: 0 10px 10px 0; }
 
-        /* Date cell */
+        /* ─── Date cell ─── */
         .date-cell {
-            background: linear-gradient(135deg, rgba(3, 105, 161, 0.92), rgba(2, 79, 120, 0.92));
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(3,105,161,0.92), rgba(2,79,120,0.92));
             color: #fff;
             text-align: center;
             vertical-align: middle;
-            padding: 18px 14px;
+            padding: 16px 12px;
             border-radius: 12px 0 0 12px;
-            min-width: 130px;
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+            min-width: 128px;
+            border: 1px solid rgba(56,189,248,0.25);
         }
 
-        .date-cell .weekday {
-            font-size: 13px;
-            font-weight: 600;
-            color: #7dd3fc;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }
+        .date-cell .weekday { font-size: 12px; font-weight: 600; color: #7dd3fc; margin-bottom: 4px; }
+        .date-cell .hijri-main { font-size: 26px; font-weight: 800; display: block; line-height: 1; }
+        .date-cell .hijri-month { font-size: 13px; font-weight: 600; color: #bae6fd; display: block; margin-bottom: 6px; }
+        .date-cell .greg-sub { font-size: 11px; color: rgba(186,230,253,0.65); display: block; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 5px; }
 
-        .date-cell .hijri-main {
-            font-size: 22px;
-            font-weight: 800;
-            display: block;
-            line-height: 1.1;
-        }
-
-        .date-cell .hijri-month {
-            font-size: 14px;
-            font-weight: 600;
-            color: #bae6fd;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .date-cell .greg-sub {
-            font-size: 11px;
-            color: rgba(186, 230, 253, 0.7);
-            display: block;
-            border-top: 1px solid rgba(255,255,255,0.15);
-            padding-top: 6px;
-            margin-top: 2px;
-        }
-
-        /* Task cells */
+        /* ─── Task cells ─── */
         td.task-cell {
             background: var(--surface);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 16px 10px;
+            padding: 14px 10px;
             text-align: center;
             vertical-align: top;
-            border: 1px solid rgba(203, 213, 225, 0.4);
+            border: 1px solid rgba(203,213,225,0.4);
             border-right: none;
-            transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+            transition: background 0.2s, border-color 0.2s;
             min-width: 150px;
         }
 
-        td.task-cell:last-child {
-            border-radius: 0 12px 12px 0;
-        }
-
-        td.task-cell.status-yes {
-            background: var(--green-bg);
-            border-color: var(--green-border);
-        }
-
-        td.task-cell.status-no {
-            background: var(--red-bg);
-            border-color: var(--red-border);
-        }
+        td.task-cell:last-child { border-radius: 0 12px 12px 0; }
+        td.task-cell.status-yes { background: var(--green-bg); border-color: var(--green-border); }
+        td.task-cell.status-no  { background: var(--red-bg);   border-color: var(--red-border); }
 
         .task-label {
             display: block;
             font-size: 10px;
             font-weight: 600;
             color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 6px;
-            padding-bottom: 6px;
+            letter-spacing: 0.7px;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
             border-bottom: 1px dashed #e2e8f0;
         }
 
         .person-name {
             display: block;
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 800;
             color: var(--primary);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .status-yes .person-name { color: var(--green-border); }
@@ -213,25 +194,20 @@
             font-weight: 600;
             padding: 2px 10px;
             border-radius: 20px;
-            margin-bottom: 10px;
-            min-height: 20px;
+            margin-bottom: 8px;
+            min-height: 18px;
         }
 
         .status-yes .status-badge { background: #dcfce7; color: #15803d; }
         .status-no  .status-badge { background: #fee2e2; color: #b91c1c; }
-        .status-none .status-badge { background: transparent; color: transparent; }
+        .status-none .status-badge { visibility: hidden; }
 
-        /* Buttons */
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
+        /* ─── Buttons ─── */
+        .actions { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; }
 
         .btn {
-            padding: 5px 9px;
-            font-size: 12px;
+            padding: 5px 8px;
+            font-size: 11px;
             font-weight: 700;
             border-radius: 6px;
             cursor: pointer;
@@ -243,30 +219,35 @@
         .btn:hover  { opacity: 0.8; transform: translateY(-1px); }
         .btn:active { transform: scale(0.95); }
 
+        /* في وضع الأرشيف نخفي الأزرار */
+        .archive-mode .btn { display: none; }
+        .archive-mode .status-badge { margin-bottom: 0; }
+
         .btn-yes  { background: #f0fdf4; color: #15803d; border-color: #16a34a; }
         .btn-no   { background: #fff1f2; color: #b91c1c; border-color: #dc2626; }
         .btn-swap { background: #eff6ff; color: #1d4ed8; border-color: #3b82f6; }
 
         /* Today highlight */
         tr.today-row .date-cell {
-            background: linear-gradient(135deg, rgba(5, 150, 105, 0.92), rgba(4, 120, 87, 0.92));
+            background: linear-gradient(135deg, rgba(5,150,105,0.92), rgba(4,120,87,0.92));
         }
-
         tr.today-row .date-cell .weekday { color: #6ee7b7; }
         tr.today-row .date-cell .hijri-month { color: #a7f3d0; }
 
-        /* Reset button */
-        .reset-area {
-            text-align: center;
-            margin-top: 24px;
+        /* ─── Bottom bar ─── */
+        .bottom-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .btn-reset {
             background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(8px);
-            color: rgba(255,255,255,0.6);
+            color: rgba(255,255,255,0.55);
             border: 1px solid rgba(255,255,255,0.15);
-            padding: 8px 24px;
+            padding: 8px 22px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 13px;
@@ -276,7 +257,23 @@
 
         .btn-reset:hover { background: rgba(239,68,68,0.2); color: #fca5a5; border-color: #fca5a5; }
 
-        /* Swap modal */
+        /* ─── Archive banner ─── */
+        .archive-banner {
+            display: none;
+            background: rgba(234,179,8,0.15);
+            border: 1px solid rgba(234,179,8,0.35);
+            color: #fde68a;
+            text-align: center;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .archive-banner.visible { display: block; }
+
+        /* ─── Swap modal ─── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -298,24 +295,10 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.4);
         }
 
-        .modal h3 {
-            font-size: 18px;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
+        .modal h3 { font-size: 18px; color: var(--primary); margin-bottom: 6px; }
+        .modal p  { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
 
-        .modal p {
-            font-size: 14px;
-            color: var(--muted);
-            margin-bottom: 18px;
-        }
-
-        .modal-names {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+        .modal-names { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
 
         .btn-name {
             padding: 12px;
@@ -344,9 +327,8 @@
         }
 
         @media (max-width: 640px) {
-            h1 { font-size: 22px; }
-            .month-badge { font-size: 14px; padding: 8px 18px; }
-            .person-name { font-size: 16px; }
+            h1 { font-size: 20px; }
+            .month-badge { font-size: 14px; padding: 8px 16px; min-width: 160px; }
         }
     </style>
 </head>
@@ -355,8 +337,20 @@
 <div class="container">
     <header>
         <h1>🗓️ جدول الشغل الأسبوعي</h1>
-        <div class="month-badge" id="month-display">🌙 جاري التحميل...</div>
+
+        <div class="month-nav">
+            <button class="nav-btn" id="btn-prev" onclick="changeMonth(-1)" title="الشهر السابق">&#8250;</button>
+            <div class="month-badge">
+                <span id="month-display">🌙 جاري التحميل...</span>
+                <span class="archive-label" id="archive-label"></span>
+            </div>
+            <button class="nav-btn" id="btn-next" onclick="changeMonth(1)" title="الشهر التالي" disabled>&#8249;</button>
+        </div>
     </header>
+
+    <div class="archive-banner" id="archive-banner">
+        📦 أنت تعرض أرشيف شهر سابق — للتعديل ارجع للشهر الحالي
+    </div>
 
     <div class="table-wrapper">
         <table>
@@ -373,8 +367,8 @@
         </table>
     </div>
 
-    <div class="reset-area">
-        <button class="btn-reset" onclick="confirmReset()">🔄 إعادة تعيين الجدول</button>
+    <div class="bottom-bar">
+        <button class="btn-reset" id="reset-btn" onclick="confirmReset()">🔄 إعادة تعيين الشهر الحالي</button>
     </div>
 </div>
 
@@ -389,171 +383,170 @@
 </div>
 
 <script>
-    // ─── إعدادات الأسماء والمهام ───────────────────────────────────────────
     const defaultNames = ["شوق", "محمد", "فارس", "راكان"];
     const taskLabels   = ["الارضي", "تنظيف العصافير", "الدرج والسطح والمصعد", "الملحق والشارع"];
 
-    // ترتيب بداية ١٠ محرم: الارضي=محمد، الاول=شوق، الثاني=راكان، الحوش=فارس
-    // محمد(1) شوق(0) راكان(3) فارس(2)
-    const ANCHOR_ORDER = [1, 0, 3, 2]; // indexes into defaultNames
+    // مرساة: أسبوع 10 محرم 1447
+    // الترتيب: [أرضي=محمد(1), أول=شوق(0), ثاني=راكان(3), حوش=فارس(2)]
+    const ANCHOR_ORDER = [2, 3, 0, 1];
+    const ANCHOR_DATE  = new Date(2025, 6, 3); // خميس 3 يوليو 2025
 
-    // تاريخ البداية: أول خميس في محرم اللي يوافق ٨ أو ٩ محرم أو ما بعده
-    // نستخدم بذور ثابتة: خميس 10 محرم 1447 → نحسبها
-    // 10 محرم 1447 → 4 يوليو 2025 (الجمعة) → أقرب خميس هو 3 يوليو 2025
-    // بس المهم نحسب wIndex بالنسبة لذلك التاريخ المرجعي
-    const ANCHOR_DATE = new Date(2025, 6, 3); // 3 يوليو 2025 (خميس أسبوع 10 محرم)
+    // ─── الشهر المعروض حالياً (0 = الحالي، -1 = السابق ...) ───
+    let monthOffset = 0;
 
-    // ─── دوال التاريخ الهجري ──────────────────────────────────────────────
-    function toHijri(date) {
-        return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
-            day: 'numeric', month: 'long', year: 'numeric'
-        }).format(date);
-    }
-
-    function toHijriShort(date) {
-        return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
-            day: 'numeric', month: 'short'
-        }).format(date);
-    }
-
-    function toHijriMonthYear(date) {
-        return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
-            month: 'long', year: 'numeric'
-        }).format(date);
-    }
-
-    function toGreg(date) {
-        return new Intl.DateTimeFormat('ar-SA', {
-            day: 'numeric', month: 'long', year: 'numeric'
-        }).format(date);
-    }
-
-    function getHijriDay(date) {
-        return parseInt(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { day: 'numeric' }).format(date));
-    }
-
-    function getHijriMonthNum(date) {
-        return parseInt(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { month: 'numeric' }).format(date));
-    }
-
-    function getHijriYear(date) {
-        return parseInt(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { year: 'numeric' }).format(date));
-    }
-
-    // ─── حساب ترتيب المهام حسب الأسابيع منذ المرساة ──────────────────────
-    function getWeeksSinceAnchor(thursday) {
-        const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-        const anchorTime = ANCHOR_DATE.getTime();
-        const thurTime   = thursday.getTime();
-        return Math.round((thurTime - anchorTime) / msPerWeek);
-    }
-
-    function getDefaultTasksForWeek(thursday) {
-        const weeks = getWeeksSinceAnchor(thursday);
-        return ANCHOR_ORDER.map((anchorIdx, col) => {
-            const rotated = (anchorIdx + weeks) % 4;
-            return defaultNames[(rotated + 4) % 4];
+    // ─── دوال هجري ────────────────────────────────────────────────────────
+    function getHijriParts(date) {
+        const fmt = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {
+            day: 'numeric', month: 'numeric', year: 'numeric'
         });
+        const parts = fmt.formatToParts(date);
+        const get = t => parseInt(parts.find(p => p.type === t).value);
+        return { day: get('day'), month: get('month'), year: get('year') };
     }
 
-    // مفتاح التخزين
-    function weekKey(thursday) {
-        const y = thursday.getFullYear();
-        const m = thursday.getMonth();
-        const d = thursday.getDate();
-        return `workschedule_v3_${y}_${m}_${d}`;
+    function hijriMonthName(date) {
+        return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', { month: 'long' }).format(date);
     }
 
-    // ─── جمع أيام الخميس في الشهر الهجري الحالي ─────────────────────────
-    function getThursdaysOfHijriMonth() {
+    function hijriMonthYearStr(date) {
+        return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', { month: 'long', year: 'numeric' }).format(date);
+    }
+
+    function gregStr(date) {
+        return new Intl.DateTimeFormat('ar-SA', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+    }
+
+    // ─── الحصول على تاريخ يمثل الشهر المطلوب (بعد إضافة offset هجري) ───
+    function getTargetMonthDate() {
+        // نبدأ من اليوم ونزيح شهوراً هجرية
         const today = new Date();
-        const currentHijriMonth = getHijriMonthNum(today);
-        const currentHijriYear  = getHijriYear(today);
+        if (monthOffset === 0) return today;
 
-        // نمشي من أول الشهر الميلادي المقابل ونبحث عن خمسات تقع في نفس الشهر الهجري
-        // نبدأ من 60 يوم قبل اليوم ونمشي 90 يوم للأمام
-        const start = new Date(today);
-        start.setDate(start.getDate() - 60);
+        // نأخذ أجزاء الهجري ونعدل الشهر
+        const { day, month, year } = getHijriParts(today);
+        let newMonth = month + monthOffset;
+        let newYear  = year;
+
+        while (newMonth > 12) { newMonth -= 12; newYear++; }
+        while (newMonth < 1)  { newMonth += 12; newYear--; }
+
+        // نبحث عن تاريخ ميلادي يقع في هذا الشهر الهجري
+        // نجرب يوم 15 من نفس الشهر الميلادي تقريباً
+        const approxMs = today.getTime() + monthOffset * 30 * 24 * 60 * 60 * 1000;
+        const approx = new Date(approxMs);
+
+        // نضبطه: نبحث عن يوم في الشهر الهجري الصح
+        for (let delta = -35; delta <= 35; delta++) {
+            const test = new Date(approx);
+            test.setDate(test.getDate() + delta);
+            const p = getHijriParts(test);
+            if (p.month === newMonth && p.year === newYear) return test;
+        }
+
+        return approx;
+    }
+
+    // ─── أيام الخميس في شهر هجري معين ───────────────────────────────────
+    function getThursdaysOfHijriMonthFor(refDate) {
+        const { month: hm, year: hy } = getHijriParts(refDate);
+
+        const start = new Date(refDate);
+        start.setDate(start.getDate() - 45);
 
         const thursdays = [];
         const cur = new Date(start);
 
-        while (thursdays.length === 0 || getHijriMonthNum(cur) === currentHijriMonth) {
-            if (cur.getDay() === 4) { // خميس
-                const hm = getHijriMonthNum(cur);
-                const hy = getHijriYear(cur);
-                if (hy === currentHijriYear && hm === currentHijriMonth) {
+        for (let i = 0; i < 120; i++) {
+            if (cur.getDay() === 4) {
+                const p = getHijriParts(cur);
+                if (p.year === hy && p.month === hm) {
                     thursdays.push(new Date(cur));
-                } else if (thursdays.length > 0) {
-                    break;
                 }
             }
             cur.setDate(cur.getDate() + 1);
-            // حماية من loop لا نهائي
-            if (Math.abs(cur - today) > 120 * 24 * 60 * 60 * 1000) break;
         }
 
         return thursdays;
     }
 
-    // ─── رسم الجدول ──────────────────────────────────────────────────────
+    // ─── مفتاح التخزين ────────────────────────────────────────────────────
+    function weekKey(thursday) {
+        return `ws4_${thursday.getFullYear()}_${thursday.getMonth()}_${thursday.getDate()}`;
+    }
+
+    // ─── دوران المهام ─────────────────────────────────────────────────────
+    function getWeeksSinceAnchor(thursday) {
+        return Math.round((thursday.getTime() - ANCHOR_DATE.getTime()) / (7*24*60*60*1000));
+    }
+
+    function getDefaultTasksForWeek(thursday) {
+        const w = getWeeksSinceAnchor(thursday);
+        return ANCHOR_ORDER.map(anchorIdx => defaultNames[((anchorIdx + w) % 4 + 4) % 4]);
+    }
+
+    // ─── رسم الجدول ───────────────────────────────────────────────────────
     function initTable() {
         const today = new Date();
         today.setHours(0,0,0,0);
 
-        const thursdays = getThursdaysOfHijriMonth();
-        
-        // عنوان الشهر الهجري
-        if (thursdays.length > 0) {
-            const midDate = thursdays[Math.floor(thursdays.length / 2)];
-            document.getElementById('month-display').textContent =
-                '🌙 أشغال شهر ' + toHijriMonthYear(midDate);
-        }
+        const isArchive = monthOffset !== 0;
+        const refDate   = getTargetMonthDate();
+        const thursdays = getThursdaysOfHijriMonthFor(refDate);
+
+        // عنوان الشهر
+        const midDate = thursdays.length > 0
+            ? thursdays[Math.floor(thursdays.length / 2)]
+            : refDate;
+
+        document.getElementById('month-display').textContent = '🌙 أشغال شهر ' + hijriMonthYearStr(midDate);
+        document.getElementById('archive-label').textContent = isArchive ? '📦 أرشيف' : '';
+
+        // بانر الأرشيف
+        document.getElementById('archive-banner').classList.toggle('visible', isArchive);
+
+        // زر الإعادة
+        document.getElementById('reset-btn').style.display = isArchive ? 'none' : '';
+
+        // سهم التالي: محجوب لما نكون في الشهر الحالي
+        document.getElementById('btn-next').disabled = monthOffset >= 0;
 
         const tbody = document.getElementById('table-body');
         tbody.innerHTML = '';
 
         thursdays.forEach(thursday => {
-            const key = weekKey(thursday);
             thursday.setHours(0,0,0,0);
+            const key = weekKey(thursday);
 
-            // تحميل أو إنشاء البيانات
             let data = null;
             try { data = JSON.parse(localStorage.getItem(key)); } catch(e) {}
             if (!data) {
-                data = {
-                    tasks: getDefaultTasksForWeek(thursday),
-                    status: ['', '', '', '']
-                };
-                localStorage.setItem(key, JSON.stringify(data));
+                data = { tasks: getDefaultTasksForWeek(thursday), status: ['','','',''] };
+                if (!isArchive) localStorage.setItem(key, JSON.stringify(data));
             }
 
             const isToday = thursday.getTime() === today.getTime();
+            const { day: hDay, year: hYear } = getHijriParts(thursday);
+            const hMonth = hijriMonthName(thursday);
+            const gStr   = gregStr(thursday);
 
-            // بناء الصف
             const tr = document.createElement('tr');
             if (isToday) tr.classList.add('today-row');
 
             // خلية التاريخ
-            const hijriDay   = getHijriDay(thursday);
-            const hijriMonth = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', { month: 'long' }).format(thursday);
-            const hijriYear  = getHijriYear(thursday);
-            const gregStr    = toGreg(thursday);
-
             const dateTd = document.createElement('td');
             dateTd.className = 'date-cell';
             dateTd.innerHTML = `
-                <div class="weekday">الخميس${isToday ? ' ← اليوم' : ''}</div>
-                <span class="hijri-main">${hijriDay}</span>
-                <span class="hijri-month">${hijriMonth} ${hijriYear}هـ</span>
-                <span class="greg-sub">${gregStr}</span>
+                <div class="weekday">الخميس${isToday ? ' ◄ اليوم' : ''}</div>
+                <span class="hijri-main">${hDay}</span>
+                <span class="hijri-month">${hMonth} ${hYear}هـ</span>
+                <span class="greg-sub">${gStr}</span>
             `;
             tr.appendChild(dateTd);
 
             // خلايا المهام
             for (let i = 0; i < 4; i++) {
                 const td = document.createElement('td');
-                td.className = 'task-cell';
+                td.className = 'task-cell' + (isArchive ? ' archive-mode' : '');
                 const st = data.status[i];
                 if (st === 'yes') td.classList.add('status-yes');
                 else if (st === 'no') td.classList.add('status-no');
@@ -564,11 +557,11 @@
                 td.innerHTML = `
                     <span class="task-label">${taskLabels[i]}</span>
                     <span class="person-name">${data.tasks[i]}</span>
-                    <span class="status-badge">${statusText}</span>
+                    <span class="status-badge">${statusText || '&nbsp;'}</span>
                     <div class="actions">
-                        <button class="btn btn-yes"  onclick="setStatus('${key}', ${i}, 'yes')">✅ اشتغل</button>
-                        <button class="btn btn-no"   onclick="setStatus('${key}', ${i}, 'no')">❌ عجاز</button>
-                        <button class="btn btn-swap" onclick="openSwap('${key}', ${i}, '${data.tasks[i]}')">🔄 بدل</button>
+                        <button class="btn btn-yes"  onclick="setStatus('${key}',${i},'yes')">✅ اشتغل</button>
+                        <button class="btn btn-no"   onclick="setStatus('${key}',${i},'no')">❌ عجاز</button>
+                        <button class="btn btn-swap" onclick="openSwap('${key}',${i},'${data.tasks[i]}')">🔄 بدل</button>
                     </div>
                 `;
                 tr.appendChild(td);
@@ -578,22 +571,29 @@
         });
     }
 
+    // ─── التنقل بين الأشهر ────────────────────────────────────────────────
+    function changeMonth(dir) {
+        monthOffset += dir;
+        if (monthOffset > 0) monthOffset = 0;
+        initTable();
+    }
+
     // ─── تغيير الحالة ─────────────────────────────────────────────────────
     function setStatus(key, i, type) {
-        let data = JSON.parse(localStorage.getItem(key));
+        let data = JSON.parse(localStorage.getItem(key)) || { tasks: [], status: ['','','',''] };
         data.status[i] = data.status[i] === type ? '' : type;
         localStorage.setItem(key, JSON.stringify(data));
         initTable();
     }
 
-    // ─── نافذة التبديل ───────────────────────────────────────────────────
+    // ─── نافذة التبديل ────────────────────────────────────────────────────
     let swapState = null;
 
     function openSwap(key, i, currentPerson) {
         const data = JSON.parse(localStorage.getItem(key));
+        if (!data) return;
         swapState = { key, i };
         document.getElementById('swap-desc').textContent = `تبديل "${currentPerson}" مع:`;
-
         const opts = document.getElementById('swap-options');
         opts.innerHTML = '';
         data.tasks.forEach((name, j) => {
@@ -604,7 +604,6 @@
             btn.onclick = () => doSwap(j);
             opts.appendChild(btn);
         });
-
         document.getElementById('swap-modal').classList.add('open');
     }
 
@@ -623,23 +622,20 @@
         swapState = null;
     }
 
-    // ─── إعادة تعيين ─────────────────────────────────────────────────────
+    // ─── إعادة تعيين الشهر الحالي فقط ───────────────────────────────────
     function confirmReset() {
-        if (confirm('هل تبغى تمسح كل التعديلات وترجع للجدول الافتراضي؟')) {
-            // حذف مفاتيح الأسبوع فقط
-            Object.keys(localStorage)
-                .filter(k => k.startsWith('workschedule_v3_'))
-                .forEach(k => localStorage.removeItem(k));
+        if (confirm('هل تبغى تمسح تعديلات الشهر الحالي وترجع للجدول الافتراضي؟')) {
+            const refDate   = getTargetMonthDate();
+            const thursdays = getThursdaysOfHijriMonthFor(refDate);
+            thursdays.forEach(t => localStorage.removeItem(weekKey(t)));
             initTable();
         }
     }
 
-    // إغلاق الموديل بالضغط خارجه
     document.getElementById('swap-modal').addEventListener('click', function(e) {
         if (e.target === this) closeModal();
     });
 
-    // ─── تشغيل ────────────────────────────────────────────────────────────
     initTable();
 </script>
 
