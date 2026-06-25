@@ -386,10 +386,10 @@
     const defaultNames = ["شوق", "محمد", "فارس", "راكان"];
     const taskLabels   = ["الارضي", "تنظيف العصافير", "الدرج والسطح والمصعد", "الملحق والشارع"];
 
-    // مرساة: أسبوع 10 محرم 1447
-    // الترتيب: [أرضي=محمد(1), أول=شوق(0), ثاني=راكان(3), حوش=فارس(2)]
-    const ANCHOR_ORDER = [2, 3, 0, 1];
-    const ANCHOR_DATE  = new Date(2025, 6, 3); // خميس 3 يوليو 2025
+    // مرساة: أسبوع 3 محرم 1447
+    // الترتيب: [أرضي=شوق(0), أول=راكان(3), ثاني=فارس(2), حوش=محمد(1)]
+    const ANCHOR_ORDER = [0, 3, 2, 1];
+    const ANCHOR_DATE  = new Date(2026, 5, 18); // خميس 3 محرم 1448 = 18 يونيو 2026
 
     // ─── الشهر المعروض حالياً (0 = الحالي، -1 = السابق ...) ───
     let monthOffset = 0;
@@ -481,7 +481,10 @@
 
     function getDefaultTasksForWeek(thursday) {
         const w = getWeeksSinceAnchor(thursday);
-        return ANCHOR_ORDER.map(anchorIdx => defaultNames[((anchorIdx + w) % 4 + 4) % 4]);
+        // نبني قائمة الأسماء حسب ترتيب المرساة
+        const anchorNames = ANCHOR_ORDER.map(i => defaultNames[i]);
+        // كل أسبوع الكل يتقدم خطوة: الأرضي→الأول→الثاني→الحوش→الأرضي
+        return anchorNames.map((_, col) => anchorNames[((col - w + 1) % 4 + 4) % 4]);
     }
 
     // ─── رسم الجدول ───────────────────────────────────────────────────────
