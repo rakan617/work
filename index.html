@@ -559,10 +559,10 @@
                     <span class="person-name">${data.tasks[i]}</span>
                     <span class="status-badge">${statusText || '&nbsp;'}</span>
                     <div class="actions">
-                        <button class="btn btn-yes"  onclick="setStatus('${key}',${i},'yes')">✅ اشتغل</button>
-                        <button class="btn btn-warn" onclick="setStatus('${key}',${i},'warn')">⚠️ على المحك</button>
-                        <button class="btn btn-no"   onclick="setStatus('${key}',${i},'no')">❌ عجاز</button>
-                        <button class="btn btn-swap" onclick="openSwap('${key}',${i},'${data.tasks[i]}')">🔄 بدل</button>
+                        <button class="btn btn-yes"  onclick="setStatus('${key}',${i},'yes')"> اشتغل✅</button>
+                        <button class="btn btn-warn" onclick="setStatus('${key}',${i},'warn')"> اظبط امورك⚠️</button>
+                        <button class="btn btn-no"   onclick="setStatus('${key}',${i},'no')"> عجاز❌</button>
+                        <button class="btn btn-swap" onclick="openSwap('${key}',${i},'${data.tasks[i]}')"> بدل🔄</button>
                     </div>
                 `;
                 tr.appendChild(td);
