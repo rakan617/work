@@ -13,6 +13,8 @@
             --green-border: #16a34a;
             --red-bg: rgba(254, 226, 226, 0.97);
             --red-border: #dc2626;
+            --orange-bg: rgba(255, 237, 213, 0.97); /* لون خلفية برتقالي هادئ */
+            --orange-border: #ea580c;             /* لون حدود برتقالي غامق */
             --text: #1e293b;
             --muted: #64748b;
         }
@@ -163,8 +165,9 @@
         }
 
         td.task-cell:last-child { border-radius: 0 12px 12px 0; }
-        td.task-cell.status-yes { background: var(--green-bg); border-color: var(--green-border); }
-        td.task-cell.status-no  { background: var(--red-bg);   border-color: var(--red-border); }
+        td.task-cell.status-yes  { background: var(--green-bg); border-color: var(--green-border); }
+        td.task-cell.status-no   { background: var(--red-bg);   border-color: var(--red-border); }
+        td.task-cell.status-warn { background: var(--orange-bg); border-color: var(--orange-border); }
 
         .task-label {
             display: block;
@@ -185,8 +188,9 @@
             margin-bottom: 8px;
         }
 
-        .status-yes .person-name { color: var(--green-border); }
-        .status-no  .person-name { color: var(--red-border); }
+        .status-yes  .person-name { color: var(--green-border); }
+        .status-no   .person-name { color: var(--red-border); }
+        .status-warn .person-name { color: var(--orange-border); }
 
         .status-badge {
             display: inline-block;
@@ -198,8 +202,9 @@
             min-height: 18px;
         }
 
-        .status-yes .status-badge { background: #dcfce7; color: #15803d; }
-        .status-no  .status-badge { background: #fee2e2; color: #b91c1c; }
+        .status-yes  .status-badge { background: #dcfce7; color: #15803d; }
+        .status-no   .status-badge { background: #fee2e2; color: #b91c1c; }
+        .status-warn .status-badge { background: #ffedd5; color: #c2410c; }
         .status-none .status-badge { visibility: hidden; }
 
         /* ─── Buttons ─── */
@@ -225,6 +230,7 @@
 
         .btn-yes  { background: #f0fdf4; color: #15803d; border-color: #16a34a; }
         .btn-no   { background: #fff1f2; color: #b91c1c; border-color: #dc2626; }
+        .btn-warn { background: #fff7ed; color: #c2410c; border-color: #ea580c; }
         .btn-swap { background: #eff6ff; color: #1d4ed8; border-color: #3b82f6; }
 
         /* Today highlight */
@@ -372,7 +378,6 @@
     </div>
 </div>
 
-<!-- Swap Modal -->
 <div class="modal-overlay" id="swap-modal">
     <div class="modal">
         <h3>🔄 تبديل الشخص</h3>
@@ -418,11 +423,9 @@
 
     // ─── الحصول على تاريخ يمثل الشهر المطلوب (بعد إضافة offset هجري) ───
     function getTargetMonthDate() {
-        // نبدأ من اليوم ونزيح شهوراً هجرية
         const today = new Date();
         if (monthOffset === 0) return today;
 
-        // نأخذ أجزاء الهجري ونعدل الشهر
         const { day, month, year } = getHijriParts(today);
         let newMonth = month + monthOffset;
         let newYear  = year;
@@ -430,12 +433,9 @@
         while (newMonth > 12) { newMonth -= 12; newYear++; }
         while (newMonth < 1)  { newMonth += 12; newYear--; }
 
-        // نبحث عن تاريخ ميلادي يقع في هذا الشهر الهجري
-        // نجرب يوم 15 من نفس الشهر الميلادي تقريباً
         const approxMs = today.getTime() + monthOffset * 30 * 24 * 60 * 60 * 1000;
         const approx = new Date(approxMs);
 
-        // نضبطه: نبحث عن يوم في الشهر الهجري الصح
         for (let delta = -35; delta <= 35; delta++) {
             const test = new Date(approx);
             test.setDate(test.getDate() + delta);
@@ -481,9 +481,7 @@
 
     function getDefaultTasksForWeek(thursday) {
         const w = getWeeksSinceAnchor(thursday);
-        // نبني قائمة الأسماء حسب ترتيب المرساة
         const anchorNames = ANCHOR_ORDER.map(i => defaultNames[i]);
-        // كل أسبوع الكل يتقدم خطوة: الأرضي→الأول→الثاني→الحوش→الأرضي
         return anchorNames.map((_, col) => anchorNames[((col - w + 1) % 4 + 4) % 4]);
     }
 
@@ -496,7 +494,6 @@
         const refDate   = getTargetMonthDate();
         const thursdays = getThursdaysOfHijriMonthFor(refDate);
 
-        // عنوان الشهر
         const midDate = thursdays.length > 0
             ? thursdays[Math.floor(thursdays.length / 2)]
             : refDate;
@@ -504,13 +501,8 @@
         document.getElementById('month-display').textContent = '🌙 أشغال شهر ' + hijriMonthYearStr(midDate);
         document.getElementById('archive-label').textContent = isArchive ? '📦 أرشيف' : '';
 
-        // بانر الأرشيف
         document.getElementById('archive-banner').classList.toggle('visible', isArchive);
-
-        // زر الإعادة
         document.getElementById('reset-btn').style.display = isArchive ? 'none' : '';
-
-        // سهم التالي: محجوب لما نكون في الشهر الحالي
         document.getElementById('btn-next').disabled = monthOffset >= 0;
 
         const tbody = document.getElementById('table-body');
@@ -551,11 +543,16 @@
                 const td = document.createElement('td');
                 td.className = 'task-cell' + (isArchive ? ' archive-mode' : '');
                 const st = data.status[i];
+                
                 if (st === 'yes') td.classList.add('status-yes');
                 else if (st === 'no') td.classList.add('status-no');
+                else if (st === 'warn') td.classList.add('status-warn'); // إضافة حالة "على المحك"
                 else td.classList.add('status-none');
 
-                const statusText = st === 'yes' ? '✅ اشتغل' : st === 'no' ? '❌ عجاز' : '';
+                let statusText = '';
+                if (st === 'yes') statusText = '✅ اشتغل';
+                else if (st === 'no') statusText = '❌ عجاز';
+                else if (st === 'warn') statusText = '⚠️ على المحك';
 
                 td.innerHTML = `
                     <span class="task-label">${taskLabels[i]}</span>
@@ -563,6 +560,7 @@
                     <span class="status-badge">${statusText || '&nbsp;'}</span>
                     <div class="actions">
                         <button class="btn btn-yes"  onclick="setStatus('${key}',${i},'yes')">✅ اشتغل</button>
+                        <button class="btn btn-warn" onclick="setStatus('${key}',${i},'warn')">⚠️ على المحك</button>
                         <button class="btn btn-no"   onclick="setStatus('${key}',${i},'no')">❌ عجاز</button>
                         <button class="btn btn-swap" onclick="openSwap('${key}',${i},'${data.tasks[i]}')">🔄 بدل</button>
                     </div>
