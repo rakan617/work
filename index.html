@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الشغل الاسبوعي</title>
+    <title>جدول الشغل الاسبوعي</title>
     <style>
         :root {
             --primary-color: #1e293b;
             --accent-color: #0284c7;
             --text-color: #334155;
-            --cell-bg: rgba(255, 255, 255, 0.95); /* خليت المربعات بيضاء مع شفافية خفيفة جداً تطلع فخمة */
+            --cell-bg: rgba(255, 255, 255, 0.95);
         }
 
         body {
@@ -17,143 +17,34 @@
             color: var(--text-color);
             margin: 0;
             padding: 20px;
-            
-            /* أضفنا خلفية الصورة هنا */
-            background-image: url('bg.jpg'); /* اسم الصورة اللي بترفعها */
-            background-size: cover; /* تغطي الشاشة بالكامل */
-            background-position: center; /* تتوسط الشاشة */
-            background-attachment: fixed; /* تثبت في مكانها لما تنزل بالصفحة */
-            background-color: #cbd5e1; /* لون احتياطي لو تأخرت الصورة بالتحميل */
+            background-image: url('bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #cbd5e1;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-top: 10px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; color: #ffffff; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
+        .month-title { text-align: center; font-size: 20px; font-weight: bold; color: #ffffff; background: rgba(2, 132, 199, 0.85); padding: 10px 30px; border-radius: 30px; width: fit-content; margin: 0 auto 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
 
-        h1 {
-            text-align: center;
-            color: #ffffff; /* خليت العنوان أبيض عشان يبرز على الصورة */
-            margin-bottom: 5px;
-            font-size: 34px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* ظل أسود عشان ينقرئ على أي صورة */
-        }
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: separate; border-spacing: 10px; }
+        th { background-color: rgba(30, 41, 59, 0.9); color: white; padding: 15px; border-radius: 8px; }
 
-        .month-title {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 30px;
-            background: rgba(2, 132, 199, 0.85); /* خلفية زرقاء شبه شفافة */
-            display: inline-block;
-            padding: 10px 30px;
-            border-radius: 30px;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
-            display: block;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
+        .date-cell { background-color: rgba(2, 132, 199, 0.9); color: white; text-align: center; border-radius: 8px; padding: 10px; }
+        .hijri-main { font-size: 18px; font-weight: bold; display: block; }
+        .greg-sub { font-size: 12px; color: #bae6fd; display: block; margin-top: 4px; border-top: 1px solid rgba(255,255,255,0.2); }
 
-        /* تصميم الإكسل والمسافات */
-        .table-wrapper {
-            overflow-x: auto;
-            padding-bottom: 20px;
-        }
+        td { background-color: var(--cell-bg); border-radius: 8px; padding: 15px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .task-label { font-size: 11px; color: #64748b; display: block; margin-bottom: 4px; }
+        .person-name { font-size: 17px; font-weight: bold; color: var(--primary-color); display: block; margin-bottom: 10px; }
 
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 12px 15px;
-        }
+        .status-yes { border: 2px solid #10b981; background-color: rgba(209, 250, 229, 0.95); }
+        .status-no { border: 2px solid #ef4444; background-color: rgba(254, 226, 226, 0.95); }
 
-        th {
-            background-color: rgba(30, 41, 59, 0.9);
-            color: white;
-            font-weight: bold;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 18px;
-            text-align: center;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
-            backdrop-filter: blur(5px); /* تأثير الزجاج المضبب */
-        }
-
-        .date-cell {
-            background-color: rgba(2, 132, 199, 0.9);
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            vertical-align: middle;
-            border: none;
-            width: 140px;
-            backdrop-filter: blur(5px);
-        }
-
-        .hijri-date {
-            font-size: 13px;
-            font-weight: normal;
-            color: #bae6fd;
-            margin-top: 8px;
-            display: inline-block;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 5px;
-        }
-
-        td {
-            background-color: var(--cell-bg);
-            border: 2px solid rgba(203, 213, 225, 0.5);
-            border-radius: 8px;
-            padding: 20px 10px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            vertical-align: top;
-            min-width: 140px;
-            backdrop-filter: blur(10px);
-        }
-
-        /* حالات الألوان */
-        td.status-yes { background-color: rgba(209, 250, 229, 0.95); border-color: #10b981; }
-        td.status-no { background-color: rgba(254, 226, 226, 0.95); border-color: #ef4444; }
-
-        .person-name {
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        /* الأزرار الصغار */
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: 0.2s;
-            flex: 1;
-            min-width: 45px;
-        }
-
-        .btn-yes { background-color: #e6f4ea; color: #137333; border-color: #137333; }
-        .btn-no { background-color: #fce8e6; color: #c5221f; border-color: #c5221f; }
-        .btn-swap { background-color: #e8f0fe; color: #1a73e8; border-color: #1a73e8; }
-
-        .btn-small:hover { opacity: 0.8; }
-        .btn-small:active { transform: scale(0.95); }
+        .actions { display: flex; justify-content: center; gap: 5px; }
+        .btn-small { padding: 4px 8px; font-size: 12px; cursor: pointer; border-radius: 4px; border: 1px solid #ccc; background: white; }
     </style>
 </head>
 <body>
@@ -166,143 +57,82 @@
         <table>
             <thead>
                 <tr>
-                    <th style="background-color: rgba(2, 132, 199, 0.9);">التاريخ</th>
+                    <th>التاريخ</th>
                     <th>الدور الأرضي</th>
                     <th>الدور الأول</th>
                     <th>الدور الثاني</th>
                     <th>الحوش</th>
                 </tr>
             </thead>
-            <tbody id="table-body">
-                <!-- سيتم توليد أسابيع الشهر هنا تلقائياً -->
-            </tbody>
+            <tbody id="table-body"></tbody>
         </table>
     </div>
 </div>
 
 <script>
     const defaultNames = ["شوق", "محمد", "فارس", "راكان"];
-    let monthlyWeeksData = {}; 
-
-    function getThursdaysOfCurrentMonth() {
+    const taskDescriptions = ["الارضي", "تنظيف العصافير", "الدرج و السطح و المصعد", "الملحق و الشارع"];
+    
+    function initTable() {
+        const tbody = document.getElementById('table-body');
         const today = new Date();
-        const year = today.getFullYear();
         const month = today.getMonth();
-        let thursdays = [];
-
-        const monthName = new Intl.DateTimeFormat('ar-SA', { month: 'long', year: 'numeric' }).format(today);
-        document.getElementById('month-display').innerText = `أشغال شهر: ${monthName}`;
+        const year = today.getFullYear();
+        
+        // عرض اسم الشهر
+        document.getElementById('month-display').innerText = new Intl.DateTimeFormat('ar-SA', { month: 'long', year: 'numeric' }).format(today);
 
         let date = new Date(year, month, 1);
+        tbody.innerHTML = "";
+
         while (date.getMonth() === month) {
-            if (date.getDay() === 4) { 
-                thursdays.push(new Date(date));
+            if (date.getDay() === 4) { // يوم الخميس
+                let wIndex = date.getTime();
+                let data = JSON.parse(localStorage.getItem(`week_${wIndex}`)) || { tasks: [...defaultNames], status: ["", "", "", ""] };
+                
+                const hijri = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', { day: 'numeric', month: 'long' }).format(date);
+                const greg = new Intl.DateTimeFormat('ar-SA', { day: 'numeric', month: 'numeric' }).format(date);
+
+                let row = `<tr>
+                    <td class="date-cell"><span class="hijri-main">${hijri}</span><span class="greg-sub">${greg} م</span></td>`;
+                
+                for (let i = 0; i < 4; i++) {
+                    row += `<td class="${data.status[i] ? 'status-' + data.status[i] : ''}">
+                        <span class="task-label">${taskDescriptions[i]}</span>
+                        <span class="person-name">${data.tasks[i]}</span>
+                        <div class="actions">
+                            <button class="btn-small" onclick="setStatus('${wIndex}', ${i}, 'yes')">✅</button>
+                            <button class="btn-small" onclick="setStatus('${wIndex}', ${i}, 'no')">❌</button>
+                            <button class="btn-small" onclick="swapPerson('${wIndex}', ${i})">🔄</button>
+                        </div>
+                    </td>`;
+                }
+                row += `</tr>`;
+                tbody.innerHTML += row;
             }
             date.setDate(date.getDate() + 1);
         }
-        return thursdays;
     }
 
-    function getWeekIndex(dateObj) {
-        const localTimeMs = dateObj.getTime() + (3 * 60 * 60 * 1000);
-        return Math.floor(localTimeMs / (7 * 24 * 60 * 60 * 1000));
+    function setStatus(wIndex, i, type) {
+        let data = JSON.parse(localStorage.getItem(`week_${wIndex}`)) || { tasks: [...defaultNames], status: ["", "", "", ""] };
+        data.status[i] = (data.status[i] === type) ? "" : type;
+        localStorage.setItem(`week_${wIndex}`, JSON.stringify(data));
+        initTable();
     }
 
-    function initMonth() {
-        const thursdays = getThursdaysOfCurrentMonth();
-        const tbody = document.getElementById('table-body');
-        tbody.innerHTML = "";
-
-        thursdays.forEach(thursday => {
-            let wIndex = getWeekIndex(thursday);
-            let weekKey = `appData_v2_${wIndex}`;
-            
-            let savedData = localStorage.getItem(weekKey);
-            if (savedData) {
-                monthlyWeeksData[wIndex] = JSON.parse(savedData);
-            } else {
-                let initialTasks = [];
-                for (let i = 0; i < 4; i++) {
-                    let personIndex = (wIndex + i) % 4;
-                    initialTasks.push(defaultNames[personIndex]);
-                }
-                monthlyWeeksData[wIndex] = { tasks: initialTasks, status: ["", "", "", ""] };
-                localStorage.setItem(weekKey, JSON.stringify(monthlyWeeksData[wIndex]));
-            }
-
-            const gregStr = new Intl.DateTimeFormat('ar-SA', { day: 'numeric', month: 'long' }).format(thursday);
-            const hijriStr = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', { day: 'numeric', month: 'short', year: 'numeric' }).format(thursday);
-            
-            let tr = document.createElement('tr');
-            
-            let dateTd = document.createElement('td');
-            dateTd.className = 'date-cell';
-            dateTd.innerHTML = `الخميس<br><br>${gregStr}<br><span class="hijri-date">${hijriStr} هـ</span>`;
-            tr.appendChild(dateTd);
-
-            for (let i = 0; i < 4; i++) {
-                let td = document.createElement('td');
-                let currentStatus = monthlyWeeksData[wIndex].status[i];
-                
-                if (currentStatus === 'yes') td.classList.add('status-yes');
-                if (currentStatus === 'no') td.classList.add('status-no');
-
-                td.innerHTML = `
-                    <span class="person-name">${monthlyWeeksData[wIndex].tasks[i]}</span>
-                    <div class="actions">
-                        <button class="btn-small btn-yes" onclick="setStatus(${wIndex}, ${i}, 'yes')">✅ اشتغل</button>
-                        <button class="btn-small btn-no" onclick="setStatus(${wIndex}, ${i}, 'no')">❌ عجاز</button>
-                        <button class="btn-small btn-swap" onclick="swapPerson(${wIndex}, ${i})">🔄 بدل</button>
-                    </div>
-                `;
-                tr.appendChild(td);
-            }
-            tbody.appendChild(tr);
-        });
+    function swapPerson(wIndex, i) {
+        let data = JSON.parse(localStorage.getItem(`week_${wIndex}`)) || { tasks: [...defaultNames], status: ["", "", "", ""] };
+        let name = prompt("بدل " + data.tasks[i] + " مع مين؟");
+        let target = data.tasks.indexOf(name);
+        if (target !== -1) {
+            [data.tasks[i], data.tasks[target]] = [data.tasks[target], data.tasks[i]];
+            localStorage.setItem(`week_${wIndex}`, JSON.stringify(data));
+            initTable();
+        } else { alert("اسم غير صحيح"); }
     }
 
-    function setStatus(wIndex, taskIndex, statusType) {
-        let weekKey = `appData_v2_${wIndex}`;
-        let weekData = monthlyWeeksData[wIndex];
-
-        if (weekData.status[taskIndex] === statusType) {
-            weekData.status[taskIndex] = ""; 
-        } else {
-            weekData.status[taskIndex] = statusType;
-        }
-
-        localStorage.setItem(weekKey, JSON.stringify(weekData));
-        initMonth(); 
-    }
-
-    function swapPerson(wIndex, taskIndex) {
-        let weekKey = `appData_v2_${wIndex}`;
-        let weekData = monthlyWeeksData[wIndex];
-        
-        let currentPerson = weekData.tasks[taskIndex];
-        let otherPerson = prompt(`تبغى تبدل "${currentPerson}" مع مين في هذا الأسبوع؟\n(اكتب: شوق، محمد، فارس، أو راكان)`);
-        
-        if (otherPerson) {
-            otherPerson = otherPerson.trim();
-            let otherIndex = weekData.tasks.indexOf(otherPerson);
-            
-            if (otherIndex !== -1 && otherIndex !== taskIndex) {
-                weekData.tasks[taskIndex] = weekData.tasks[otherIndex];
-                weekData.tasks[otherIndex] = currentPerson;
-                
-                let tempStatus = weekData.status[taskIndex];
-                weekData.status[taskIndex] = weekData.status[otherIndex];
-                weekData.status[otherIndex] = tempStatus;
-
-                localStorage.setItem(weekKey, JSON.stringify(weekData));
-                initMonth();
-            } else {
-                alert("الاسم غير موجود أو مكتوب بشكل خاطئ! تأكد من كتابة الاسم بدون مسافات إضافية.");
-            }
-        }
-    }
-
-    initMonth();
+    initTable();
 </script>
 
 </body>
